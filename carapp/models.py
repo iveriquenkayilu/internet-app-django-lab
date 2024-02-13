@@ -21,12 +21,13 @@ class Vehicle(models.Model):
     description = models.TextField(blank=True, default='', max_length=150)
 
     def __str__(self):
-        return str(self.id) + " " + self.car_name + " " + self.car_type.name + " " + str(self.car_price) + " " + str(self.inventory)
+        return str(self.id) + " " + self.car_name + " " + self.car_type.name + " " + str(self.car_price) + " " + str(
+            self.inventory)
 
 
 class Buyer(User):
     AREA_CHOICES = [('W', 'Windsor'), ('LS', 'LaSalle'), ('A', 'Amherstburg'), ('L', 'Lakeshore'), ('LE', 'Leamington'),
-                    ('TO', 'Toronto'), ('CH', 'Chatham'), ('WA','Waterloo')]
+                    ('TO', 'Toronto'), ('CH', 'Chatham'), ('WA', 'Waterloo')]
     shipping_address = models.CharField(max_length=300, null=True, blank=True)
     area = models.CharField(max_length=2, choices=AREA_CHOICES, default='CH')
     interested_in = models.ManyToManyField(CarType)
@@ -57,3 +58,16 @@ class OrderVehicle(models.Model):
 
     def total_price(self):
         return self.quantity * self.vehicle.car_price
+
+
+class GroupMember(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    semester = models.IntegerField()
+    link = models.URLField(max_length=100)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} semester {self.semester}"
+
+    class Meta:
+        ordering = ['first_name']
