@@ -60,9 +60,11 @@ def homepage2(request):
         response.write(para)
     return response
 
-#No need to pass an extra context variable
+
+# No need to pass an extra context variable
 def aboutus(request):
     return render(request, 'carapp/aboutus.html')
+
 
 def aboutus2(request):
     response = HttpResponse()
@@ -73,13 +75,8 @@ def aboutus2(request):
 def cardetail(request, cartype_no):
     car_type = get_object_or_404(CarType, pk=cartype_no)
     cars = Vehicle.objects.filter(car_type_id=cartype_no)
-    heading1 = '<p>' + f'Vehicles of car type {cartype_no}: ' + ' </p> '
-    response = HttpResponse()
-    response.write(heading1)
-    for cartype in cars:
-        para = '<p>' + str(cartype.id) + ': ' + str(cartype) + '</p>'
-        response.write(para)
-    return response
+    context = {'cars': cars, 'cartype_no': cartype_no, 'cartype_name': car_type.name}
+    return render(request, 'carapp/cardetail.html', context)
 
 
 def groupmembers(request):
@@ -92,6 +89,20 @@ def groupmembers(request):
         para = '<p>' + f'{member.first_name} {member.last_name} semester: {member.semester} <a href="{member.link}"> Link </a>' + '</p>'
         response.write(para)
     return response
+
+
+# class GroupMembers(View):
+# do it in 3 ways, using the Model and not using the model
+
+#1)
+class GroupMemebers(View):
+    #model = GroupMember
+    #template_name = 'carapp\\groupmembers.html'
+    #context_object_name = 'groupmembers'
+
+    def get(self, request):
+        members = GroupMember.objects.all().order_by('first_name')
+        return render(request, 'carapp/groupmembers.html', {'members': members})
 
 
 class AboutUsView(View):

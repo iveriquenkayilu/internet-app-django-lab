@@ -9,6 +9,7 @@ urlpatterns = [
     #path('carapp/aboutus', views.aboutus, name='aboutus'),
     path('carapp/aboutus',views.aboutus , name='aboutus'), #AboutUsView.as_view()
     path('carapp/<int:cartype_no>', views.cardetail, name='cardetail'),
-    path('groupmembers/', views.groupmembers, name='groupmembers'),
+    #path('groupmembers/', views.groupmembers, name='groupmembers'),
+    path('groupmembers/', views.GroupMemebers.as_view(), name='groupmembers'),
     path('practice/<int:cartype_no>', views.practice, name='practice'),
 ]

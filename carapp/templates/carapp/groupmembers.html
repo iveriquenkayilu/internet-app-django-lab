@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div>
+    <h3> Group members</h3>
+
+    {% for member in members %}
+
+        <div>
+           <p>{{ member.first_name }} </p>
+            <p> {{ member.last_name }}</p>
+            <p> Semester: {{ member.semester }} </p>
+        <p> <a href="{{ member.link }}"> {{ member.link }} </a></p>
+
+        </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>
