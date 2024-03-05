@@ -13,5 +13,6 @@ urlpatterns = [
     path('groupmembers/', views.GroupMemebers.as_view(), name='groupmembers'),
 
     path('carapp/vehicles', views.vehicles,name='vehicles'),
-    path('carapp/order', views.orderhere, name='order')
+    path('carapp/order', views.orderhere, name='order'),
+    path('carapp/orderhere', views.orderhere, name='orderhere')
 ]
