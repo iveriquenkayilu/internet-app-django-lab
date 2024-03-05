@@ -6,30 +6,6 @@ from django.views import View
 from django.shortcuts import render
 
 
-def practice(request, cartype_no):
-    # get total price of all cars  of one type
-    cartype = get_object_or_404(CarType, id=cartype_no)
-    vehicles = Vehicle.objects.filter(car_type=cartype_no)
-    # total_price = sum(vehicle.car_price for vehicle in vehicles)
-    total_price = 0
-    for vehicle in vehicles:
-        total_price += vehicle.car_price
-    interested_in = Buyer.objects.filter(interested_in=cartype_no).count()
-
-    return HttpResponse(f"The total price is {total_price} " + f"{interested_in} people interested in it")
-
-
-def homepage_old(request):
-    cartype_list = CarType.objects.all().order_by('id')
-    response = HttpResponse()
-    heading1 = '<p>' + 'Different Types of Cars: ' + ' < / p > '
-    response.write(heading1)
-    for cartype in cartype_list:
-        para = '<p>' + str(cartype.id) + ': ' + str(cartype) + '</p>'
-        response.write(para)
-    return response
-
-
 # Yes, I am adding the the heading "Different Types of Cars"
 def homepage(request):
     cartype_list = CarType.objects.all().order_by('id')
@@ -50,26 +26,9 @@ class HomePage(View):
         return response
 
 
-def homepage2(request):
-    cartype_list = Vehicle.objects.all().order_by('-car_price')[:10]
-    response = HttpResponse()
-    heading1 = '<p>' + 'Different Types of Cars: ' + ' < / p > '
-    response.write(heading1)
-    for cartype in cartype_list:
-        para = '<p>' + str(cartype.id) + ': ' + str(cartype) + '</p>'
-        response.write(para)
-    return response
-
-
 # No need to pass an extra context variable
 def aboutus(request):
     return render(request, 'carapp/aboutus.html')
-
-
-def aboutus2(request):
-    response = HttpResponse()
-    response.write("<h3>This is a Car Showroom </h3>")
-    return response
 
 
 def cardetail(request, cartype_no):

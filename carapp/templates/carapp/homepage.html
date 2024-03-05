@@ -2,8 +2,6 @@
 
 {% block body_block %}
 
-{#    Content from homepage.html#}
-{#<h2> {{heading1}}</h2>#}
 {% if cartype_list %}
 <h2> Type of Cars </h2>
 <ol>
@@ -14,8 +12,5 @@
 {% else %}
 <strong> None of the car types is available! </strong>
 {% endif %}
-
-{#<p><a href="/carapp/aboutus">About Page</a></p>#}
-{#<p> <a href="{% url 'carapp:aboutus' %}">About Page namespacing</a></p>#}
 
 {% endblock %}
