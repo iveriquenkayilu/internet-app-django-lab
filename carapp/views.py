@@ -79,6 +79,16 @@ def cardetail(request, cartype_no):
     return render(request, 'carapp/cardetail.html', context)
 
 
+def vehicles(request):
+    all_vehicles = Vehicle.objects.all()
+    context = {'vehicles': all_vehicles}
+    return render(request, 'carapp/vehicles.html', context)
+
+
+def orderhere(request):
+    return render(request, 'carapp/orderhere.html')
+
+
 def groupmembers(request):
     response = HttpResponse()
     members = GroupMember.objects.all().order_by('first_name')
@@ -94,11 +104,11 @@ def groupmembers(request):
 # class GroupMembers(View):
 # do it in 3 ways, using the Model and not using the model
 
-#1)
+# 1)
 class GroupMemebers(View):
-    #model = GroupMember
-    #template_name = 'carapp\\groupmembers.html'
-    #context_object_name = 'groupmembers'
+    # model = GroupMember
+    # template_name = 'carapp\\groupmembers.html'
+    # context_object_name = 'groupmembers'
 
     def get(self, request):
         members = GroupMember.objects.all().order_by('first_name')
@@ -111,30 +121,3 @@ class AboutUsView(View):
         response = HttpResponse()
         response.write("<h3>This is a Car Showroom </h3>")
         return response
-
-# Difference between FBV and CBV
-
-# a) Class Based Views -> we need to import View from django.views and inherit View
-# UNLIKE function based views
-# b) Class based views -> we need to mention the request method
-# UNLIKE function based views
-# c)Class based views -> we need to use as_view() method in urls.py
-# UNLIKE function based views
-# Explanation : # URL dispatcher expects function as_view creates instance of class based view and determines
-# appropriate HTTP handler in the view class if it exists else returns 405 method not allowed
-
-# Pros Of Class Based Views
-# class based views we do not have to use branching for different request methods like in function based views
-# class based views improves reusability and seperation of concerns as they are
-# Class based Views we can share variable among different request methods using class variables
-
-
-# Class based view-
-# 1.Object Oriented - acheives Abstraction ,Inheritance and Resuability
-# Useful for Managing Complexity. Used in Larger Projects.
-# 3.Provides predefined HTTP methods like get(),post().
-
-# Function based view-
-# 1.Not Object Oriented but are just functions
-# 2.Used for simple prototypes or small projects.
-# 3. HTTP methods should be handled using conditional statements.

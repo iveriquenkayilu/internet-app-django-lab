@@ -1,0 +1,11 @@
+h1 {
+    background-color: white;
+    color: black;
+    font-size: large;
+    #position: absolute;
+}
+
+.hbar1 {
+    display: inline;
+    margin: 15px;
+}

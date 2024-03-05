@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'carapp/base.html' %}
+
+{% block body_block %}
+
 
 <p> Following are the Vehicles in {{cartype_name}} with Cartype No {{cartype_no }}:</p>
 {% if cars %}
@@ -17,8 +14,4 @@
 {% else %}
 <strong> None of the car types is available! </strong>
 {% endif %}
-
-<p> <a href="/">Home </a></p>
-<p> <a href="{% url 'carapp:homepage' %}">Home page using Namespace</a></p>
-</body>
-</html>
+{% endblock %}
