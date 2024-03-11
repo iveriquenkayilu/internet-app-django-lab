@@ -1,4 +1,5 @@
 {% extends 'carapp/base.html' %}
+{% load static %}
 
 {% block body_block %}
 <div>
@@ -8,17 +9,10 @@
     &nbsp;|&nbsp;
     <a href="{% url 'carapp:groupmembers' %}">Team Details</a>
 </div>
+    <h3> Vehicles </h3>
 
-{% if vehicles %}
-<h3> Vehicles </h3>
-<ol>
-	{% for car in vehicles %}
-
-<li> <p> {{car.car_name  }} {{ car.car_price }}</p>   </li>
-{% endfor %}
-</ol>
-{% else %}
-<strong> None of the car types is available! </strong>
-{% endif %}
-
+<div>
+<div><h5> Ferrari</h5><img src="{% static 'images/ferrai.jpg' %}" alt="Ferrari"></div>
+<div><h5> Lambo</h5> <img src="{% static 'images/lambo.webp' %}" alt="Lambo"></div>
+</div>
 {% endblock %}
