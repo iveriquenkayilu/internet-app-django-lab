@@ -3,4 +3,23 @@
 {% block body_block %}
 
 <h3> You can place your order here.</h3>
+
+{% if vehiclelist %}
+<h2> Type of Cars </h2>
+<ol>
+	{% for car in vehiclelist %}
+
+<li> <p> {{car.car_name  }} {{ car.car_price | floatformat:2 }}</p>   </li>
+{% endfor %}
+</ol>
+{% else %}
+<strong> None of the car types is available! </strong>
+{% endif %}
+
+    <form method="post" action="{% url 'carapp:orderhere' %}" >
+    {% csrf_token %}
+    <table>{{ form.as_table }} </table>
+    <input value="submit" type="submit">
+    </form>
+
 {% endblock %}

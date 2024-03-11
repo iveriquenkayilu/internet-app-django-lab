@@ -1,12 +1,20 @@
 {% extends 'carapp/base.html' %}
 
 {% block body_block %}
+<div>
+    <a href="{% url 'carapp:aboutus' %}">About Us</a>
+    &nbsp;|&nbsp;
+    <a href="{% url 'carapp:search' %}">Search</a>
+    &nbsp;|&nbsp;
+    <a href="{% url 'carapp:groupmembers' %}">Team Details</a>
+</div>
 
-{% if cartype_list %}
-<h2> Type of Cars </h2>
+{% if vehicles %}
+<h3> Vehicles </h3>
 <ol>
-	{% for cartype in cartype_list %}
-<li> <p><a href="/carapp/{{cartype.id}}">{{ cartype.name}}</a></p>   </li>
+	{% for car in vehicles %}
+
+<li> <p> {{car.car_name  }} {{ car.car_price }}</p>   </li>
 {% endfor %}
 </ol>
 {% else %}
