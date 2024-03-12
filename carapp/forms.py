@@ -5,9 +5,9 @@ from carapp.models import OrderVehicle, Vehicle
 class OrderVehicleForm(forms.ModelForm):
     class Meta:
         model = OrderVehicle
-        fields = ['vehicle', 'buyer']  #vehicle_ordered
+        fields = ['vehicle', 'buyer', 'quantity']  #vehicle_ordered
         widgets = {'buyer': forms.Select}
-        # labels = {'vehicle_ordered': 'Vehicle Ordered Label'}  # Written this way to check it on the page
+        labels = {'quantity': 'Vehicles Ordered'}  # Written this way to check it on the page
 
 
 class ContactUsForm(forms.Form):

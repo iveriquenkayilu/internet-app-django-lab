@@ -108,8 +108,9 @@ def orderhere(request):
         if form.is_valid():
             order = form.save(commit=False)
             # if order.vehicle.orders <= order.vehicle.instock:
-            if order.vehicle.orders.count() <= order.vehicle.inventory:
-                order.vehicle.inventory -= 1
+            # if order.vehicle.orders.count() <= order.vehicle.inventory:
+            if order.quantity <= order.vehicle.inventory:
+                order.vehicle.inventory -= order.quantity  # order.quantity
                 order.vehicle.save()
                 order.save()
                 msg = 'Your vehicle has been ordered'
