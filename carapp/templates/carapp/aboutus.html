@@ -3,28 +3,4 @@
 
 <h3>This is a Car Showroom </h3>
 
-    <div>
-<form method="GET" action="{% url 'carapp:search' %}">
-     <label>
-        Select Vehicle
-        <select name="id">
-            {% for vehicle in vehicles %}
-            <option value="{{vehicle.id }}" {% if found and vehicle.id == found.id %} selected {% endif %}> {{ vehicle.car_name }}</option>
-            {% endfor %}
-        </select>
-    </label>
-  <input type="submit" value="Filter Cars" />
-
-</form>
-{% if found %}
-    <h4>Your search result {{ found.car_price |floatformat:2 }}</h4>
-{% endif %}
-
-</div>
-
-
-     {% for o in orders %}
-   <p> {{ o.car_name }}</p>
-    {% endfor %}
-
 {% endblock %}

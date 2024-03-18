@@ -13,7 +13,6 @@ from django.views.generic import CreateView
 from django.urls import reverse, reverse_lazy
 
 
-# Yes, I am adding the the heading "Different Types of Cars"
 def homepage(request):
     visits = request.session.get('home_page_visit', 0)
     if visits is None:
@@ -44,8 +43,7 @@ class HomePage(View):
         return response
 
 
-# No need to pass an extra context variable
-def aboutus2(request):
+def aboutus(request):
     return render(request, 'carapp/aboutus.html')
 
 
@@ -94,20 +92,6 @@ class AboutUsView(View):
         response = HttpResponse()
         response.write("<h3>This is a Car Showroom </h3>")
         return response
-
-
-def aboutus(request):
-    form = VehicleSearchForm(request.GET)
-    vehicles = Vehicle.objects.all()
-
-    if form.is_bound and form.is_valid:  # Checking if form is valid
-        if 'id' in form.data:
-            id = form.data['id']
-            vehicle = get_object_or_404(Vehicle, pk=id)  # Retrieving vehicle by primary key
-            orders = Vehicle.objects.filter(car_price__lt=30000)
-            return render(request, "carapp/aboutus.html", {'found': vehicle, 'vehicles': vehicles, 'orders': orders})
-
-    return render(request, "carapp/aboutus.html", {'vehicles': vehicles})
 
 
 # def contactusview(request):

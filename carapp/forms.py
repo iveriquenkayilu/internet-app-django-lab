@@ -24,8 +24,6 @@ class VehicleSearchForm(forms.Form):
 
 
 class BuyerSignUpForm(UserCreationForm):
-    # phone_number = forms.CharField(max_length=15)
-    # address = forms.CharField(widget=forms.Textarea)
 
     class Meta(UserCreationForm.Meta):
         model = Buyer
