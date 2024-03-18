@@ -1,19 +1,35 @@
 # Import necessary classes
-from django.http import HttpResponse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponse, HttpResponseRedirect
 
-from .forms import VehicleSearchForm, OrderVehicleForm  # ContactUsForm
-from .models import CarType, Vehicle, GroupMember, Buyer
+from .forms import VehicleSearchForm, OrderVehicleForm, BuyerSignUpForm  # ContactUsForm
+from .models import CarType, Vehicle, GroupMember, Buyer, OrderVehicle
 from django.shortcuts import get_object_or_404
 from django.views import View
 from django.shortcuts import render
+from django.views.generic import CreateView
+from django.urls import reverse, reverse_lazy
 
 
 # Yes, I am adding the the heading "Different Types of Cars"
 def homepage(request):
-    vehicles = Vehicle.objects.all().order_by('-car_price')
-    context = {'vehicles': vehicles, 'heading1': 'Different Types of Cars'}
-    return render(request, 'carapp/homepage.html', context)
+    visits = request.session.get('home_page_visit', 0)
+    if visits is None:
+        request.session['home_page_visit'] = 0
+    else:
+        visits += 1
+        request.session['home_page_visit'] = visits
 
+    cookie_value = request.COOKIES.get('home_page_visit', f'This is a default value')
+
+    vehicles = Vehicle.objects.all().order_by('-car_price')
+    context = {'vehicles': vehicles, 'heading1': 'Different Types of Cars', 'visits': visits,
+               'cookie_value': cookie_value}
+    response = render(request, 'carapp/homepage.html', context)
+    response.set_cookie('home_page_visit', f'Old session value {visits}', max_age=3600, secure=True)
+    return response
 
 class HomePage(View):
 
@@ -29,7 +45,7 @@ class HomePage(View):
 
 
 # No need to pass an extra context variable
-def aboutus(request):
+def aboutus2(request):
     return render(request, 'carapp/aboutus.html')
 
 
@@ -80,6 +96,20 @@ class AboutUsView(View):
         return response
 
 
+def aboutus(request):
+    form = VehicleSearchForm(request.GET)
+    vehicles = Vehicle.objects.all()
+
+    if form.is_bound and form.is_valid:  # Checking if form is valid
+        if 'id' in form.data:
+            id = form.data['id']
+            vehicle = get_object_or_404(Vehicle, pk=id)  # Retrieving vehicle by primary key
+            orders = Vehicle.objects.filter(car_price__lt=30000)
+            return render(request, "carapp/aboutus.html", {'found': vehicle, 'vehicles': vehicles, 'orders': orders})
+
+    return render(request, "carapp/aboutus.html", {'vehicles': vehicles})
+
+
 # def contactusview(request):
 # data = {'name': 'Iverique'}
 # form = ContactUsForm(data) #Can be empty inially
@@ -120,3 +150,60 @@ def orderhere(request):
     else:
         form = OrderVehicleForm()
     return render(request, 'carapp/orderhere.html', {'form': form, 'msg': msg, 'vehiclelist': vehiclelist})
+
+
+class SignUpView(CreateView):
+    form_class = UserCreationForm
+    # this is not working well
+    success_url = reverse_lazy("carapp:login")  # for class based, instead of  reverse('carapp:login')
+    template_name = 'carapp/signup.html'
+
+
+class BuyerSignUpView(CreateView):
+    form_class = BuyerSignUpForm
+    success_url = reverse_lazy('carapp:login')
+    template_name = 'carapp/signup.html'
+
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.is_buyer = True
+        user.save()
+        return super().form_valid(form)
+
+
+# Create your views here.
+def login_here(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect(reverse('carapp:homepage'))
+            else:
+                return HttpResponse('Your account is disabled')
+        else:
+            return HttpResponse('Login details are incorrect')
+    else:
+        return render(request, 'carapp/login_here.html')
+
+
+@login_required
+def logout_here(request):
+    logout(request)
+    # return HttpResponseRedirect(reverse('carapp:homepage'))
+    return HttpResponseRedirect('/')
+
+
+@login_required
+def list_of_orders(request):
+    print("User getting all orders")
+
+    is_user_buyer = hasattr(request.user, 'buyer')
+    if is_user_buyer:
+        orders = OrderVehicle.objects.filter(buyer=request.user.buyer)
+        context = {'orders': orders, 'is_user_buyer': is_user_buyer}
+        return render(request, 'carapp/list_of_orders.html', context)
+    else:
+        return render(request, 'carapp/list_of_orders.html', {'orders': [], 'is_user_buyer': False})

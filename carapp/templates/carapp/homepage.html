@@ -8,8 +8,16 @@
     <a href="{% url 'carapp:search' %}">Search</a>
     &nbsp;|&nbsp;
     <a href="{% url 'carapp:groupmembers' %}">Team Details</a>
+     |
+{% if user.is_authenticated %}
+    <a href="{% url 'carapp:list_of_orders' %}">My Orders</a>
+    |
+  <span> User: {{ user.username }} </span>  <a href = "{% url 'carapp:logout'%}"> Logout</a>
+{% else %}
+    <a href = "{% url 'carapp:login'%}"> Login</a>
+        {%  endif%}
 </div>
-    <h3> Vehicles </h3>
+    <h3> Vehicles session count: {{ visits }} cookie: {{ cookie_value }} </h3>
 
 <div>
 <div><h5> Ferrari</h5><img src="{% static 'images/ferrai.jpg' %}" alt="Ferrari"></div>

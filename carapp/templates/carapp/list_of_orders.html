@@ -1,0 +1,13 @@
+{% extends 'carapp/base.html' %}
+
+{% block body_block %}
+    <h4>My orders</h4>
+{% if is_user_buyer %}
+<ul>
+{% for o in orders %} <li> {{ o.vehicle.car_name }} {{ o.quantity }} </li>  {% endfor %}
+</ul>
+{% else %}
+    <p>You are not registered </p>
+{% endif %}
+
+{% endblock %}

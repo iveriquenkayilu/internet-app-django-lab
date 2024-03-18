@@ -1,0 +1,17 @@
+{% extends 'carapp/base.html' %}
+
+{% block body_block %}
+
+    <form method="post" action="{% url 'carapp:login' %}"> {% csrf_token %}
+    <div>
+         <input type="text" name="username" placeholder="Enter username" />
+    </div>
+     <div>
+         <input type="password" name="password" placeholder="Enter password" />
+    </div>
+
+      <div>
+          <input type="submit" value="Sign in here">
+      </div>
+    </form>
+{% endblock %}
