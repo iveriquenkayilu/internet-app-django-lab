@@ -4,7 +4,8 @@
     <h4>My orders</h4>
 {% if is_user_buyer %}
 <ul>
-{% for o in orders %} <li> {{ o.vehicle.car_name }} {{ o.quantity }} </li>  {% endfor %}
+{% for o in orders %} <li> {{ o.vehicle.car_name }} {{ o.vehicle.car_type }}
+     Quantity: {{ o.quantity }} Total Price : {{ o.total_price |floatformat:2 }} </li>  {% endfor %}
 </ul>
 {% else %}
     <p>You are not registered </p>
